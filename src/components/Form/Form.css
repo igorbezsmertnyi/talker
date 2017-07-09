@@ -1,14 +1,12 @@
 .container {
   height: 70%;
-  padding: 15px;
-
-  &__form {
+  padding: 15px; }
+  .container__form {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    margin-top: 80px;
-
-    &__textarea {
+    margin-top: 80px; }
+    .container__form__textarea {
       width: 70%;
       min-width: 550px;
       height: 60%;
@@ -19,12 +17,7 @@
       text-transform: capitalize;
       line-height: 85px;
       border: 0;
-      outline: 0;
-
-      &:focus {
+      outline: 0; }
+      .container__form__textarea:focus {
         border: 0;
-        outline: 0;
-      }
-    }
-  }
-}
+        outline: 0; }
