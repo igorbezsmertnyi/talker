@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import style from './Form.css'
 import throttle from 'throttle-debounce/throttle'
-import debounce from 'throttle-debounce/debounce'
 
 class Form extends Component {
   constructor(props) {
@@ -14,6 +13,7 @@ class Form extends Component {
     this.handleTalk = this.handleTalk.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.reset = this.reset.bind(this)
   }
 
   componentWillMount() {
@@ -24,7 +24,7 @@ class Form extends Component {
 
   componentDidMount() {
     window.addEventListener('keyup', e => {
-      if (e.keyCode >= 48 && e.keyCode <= 90 || e.keyCode == 8 || e.keyCode == 8) {
+      if (e.keyCode >= 48 && e.keyCode <= 90 || e.keyCode === 8 || e.keyCode === 32) {
         setTimeout(() => {
           throttle(1, this.handleTalk(), false)
           this.setState({ isTalk: false })
@@ -59,15 +59,20 @@ class Form extends Component {
 
         speechSynthesis.speak(msg)
 
-        msg.onstart = e => {
+        msg.onstart = () => {
           this.setState({ isTalk: false })
         }
 
-        msg.onend = e => {
+        msg.onend = () => {
           this.setState({ isTalk: true })
         }
       }, 200)
     }
+  }
+
+  reset() {
+    this.setState({ text: '', isTalk: false })
+    this.textArea.value = ''
   }
 
   render() {
@@ -81,12 +86,24 @@ class Form extends Component {
                     onKeyDown={this.handleKeyDown}
                     onKeyUp={this.handleKeyUp}
                     autoFocus={true}
-                    placeholder="Welcome" />
-          {langs && <select onChange={this.handleChange}>
-            {langs.map((lang, id) => {
-              return <option key={id} value={id}>{lang.name} - {lang.lang.slice(3, 5)}</option>
-            })}
-          </select>}
+                    placeholder="Your text" />
+          <div className={style.container__form__selectCont}>
+            {langs && <select className={style.container__form__select}
+                              onChange={this.handleChange}>
+              {langs.map((lang, id) => {
+                return <option key={id} value={id}>{lang.name} - {lang.lang.slice(3, 5)}</option>
+              })}
+            </select>}
+            <div className={style.container__form__select__arrow}></div>
+          </div>
+          <div className={style.container__action}>
+            <button onClick={this.handleTalk} type="button" className={style.container__action__btn}>
+              repeat
+            </button>
+            <button onClick={this.reset} type="button" className={style.container__action__btn}>
+              reset
+            </button>
+          </div>
         </form>
       </div>
     )
