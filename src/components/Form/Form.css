@@ -42,7 +42,8 @@
       background-color: transparent;
       border-radius: 4px;
       border: 1px solid #fff;
-      z-index: 2; }
+      z-index: 2;
+      cursor: pointer; }
       .container__form__select__arrow {
         position: absolute;
         width: 20px;
@@ -65,7 +66,8 @@
       border-radius: 4px;
       color: #fff;
       margin: 10px;
-      text-transform: uppercase; }
+      text-transform: uppercase;
+      cursor: pointer; }
       .container__action__btn:hover {
         background-color: #3D8EB9; }
         .container__action__btn:hover:first-child {

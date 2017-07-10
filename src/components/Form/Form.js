@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import style from './Form.css'
-import throttle from 'throttle-debounce/throttle'
 
 class Form extends Component {
   constructor(props) {
@@ -8,12 +7,13 @@ class Form extends Component {
     this.state = { langs: undefined,
                    selectedLang: undefined,
                    text: '',
-                   isTalk: false }
+                   isTalk: false,
+                   timeOut: 0 }
     this.handleChange = this.handleChange.bind(this)
     this.handleTalk = this.handleTalk.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
-    this.handleKeyDown = this.handleKeyDown.bind(this)
     this.reset = this.reset.bind(this)
+    this.dectimentTimeOut = this.dectimentTimeOut.bind(this)
   }
 
   componentWillMount() {
@@ -25,21 +25,29 @@ class Form extends Component {
   componentDidMount() {
     window.addEventListener('keyup', e => {
       if (e.keyCode >= 48 && e.keyCode <= 90 || e.keyCode === 8 || e.keyCode === 32) {
-        setTimeout(() => {
-          throttle(1, this.handleTalk(), false)
-          this.setState({ isTalk: false })
-        }, 1000)
+        this.setState({ isTalk: true })
+        this.setState({ timeOut: 18  })
+        this.dectimentTimeOut()
       }
     })
   }
 
-  handleChange(e) {
-    this.setState({ selectedLang: e.target.value })
-    this.textArea.focus()
+  dectimentTimeOut() {
+    setTimeout(() => {
+      if(this.state.timeOut > 0) {
+        this.setState({ timeOut: this.state.timeOut - 1 })
+        this.dectimentTimeOut()
+      } else if (this.state.timeOut === 0) {
+        this.handleTalk()
+        this.setState({ isTalk: false })
+      }
+    }, 400)
   }
 
-  handleKeyDown() {
-    this.setState({ isTalk: true })
+  handleChange(e) {
+    this.setState({ selectedLang: e.target.value })
+    this.handleTalk()
+    this.textArea.focus()
   }
 
   handleKeyUp(e) {
@@ -51,28 +59,29 @@ class Form extends Component {
     let msg = new SpeechSynthesisUtterance()
 
     if (this.state.isTalk) {
-      setTimeout(() => {
-        msg.voice = voices[this.state.selectedLang]
-        msg.rate = 1
-        msg.pitch = 1
-        msg.text = this.state.text
+      msg.voice = voices[this.state.selectedLang]
+      msg.rate = 1
+      msg.pitch = 1
+      msg.text = this.state.text
 
-        speechSynthesis.speak(msg)
+      speechSynthesis.speak(msg)
 
-        msg.onstart = () => {
-          this.setState({ isTalk: false })
-        }
+      msg.onstart = () => {
+        this.setState({ isTalk: false })
+      }
 
-        msg.onend = () => {
-          this.setState({ isTalk: true })
-        }
-      }, 200)
+      msg.onend = () => {
+        this.setState({ isTalk: true })
+      }
     }
+
+    this.textArea.focus()
   }
 
   reset() {
     this.setState({ text: '', isTalk: false })
     this.textArea.value = ''
+    this.textArea.focus()
   }
 
   render() {
@@ -83,7 +92,6 @@ class Form extends Component {
         <form className={style.container__form}>
           <textarea ref={(area) => this.textArea = area}
                     className={style.container__form__textarea}
-                    onKeyDown={this.handleKeyDown}
                     onKeyUp={this.handleKeyUp}
                     autoFocus={true}
                     placeholder="Your text" />
