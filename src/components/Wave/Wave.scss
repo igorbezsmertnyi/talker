@@ -1,0 +1,10 @@
+.amplitude {
+  position: relative;
+  width: 100%;
+  height: 120px;
+
+  &__canvas {
+    width: 100%;
+    height: 100%;
+  }
+}
