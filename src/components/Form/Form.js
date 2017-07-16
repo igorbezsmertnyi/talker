@@ -55,7 +55,7 @@ class Form extends Component {
   }
 
   handleKeyUp(e) {
-    this.setState({ text: e.target.value})
+    this.setState({ text: e.target.value })
   }
 
   handleTalk() {
@@ -89,7 +89,7 @@ class Form extends Component {
   }
 
   render() {
-    return(
+    return (
       <div className={style.container}>
         <form className={style.container__form}>
           <textarea ref={(area) => this.textArea = area}

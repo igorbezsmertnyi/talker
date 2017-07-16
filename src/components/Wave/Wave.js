@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import styles from './Wave.css'
 import SiriWave from '../../lib/wave.js'
 
-class Wawe extends Component {
+class Wave extends Component {
   constructor(props) {
     super(props)
     this.state = { analyser: undefined,
-                   wave: undefined }
+                   wave: undefined,
+                   audioCtx: undefined }
   }
 
   startAnalize() {
@@ -16,6 +17,7 @@ class Wawe extends Component {
       const analyser = audioCtx.createAnalyser()
       const microphone = audioCtx.createMediaStreamSource(stream)
       const javascriptNode = audioCtx.createScriptProcessor(8192, 1, 1)
+      this.setState({ audioCtx: audioCtx })
 
       analyser.smoothingTimeConstant = 0.8
       analyser.fftSize = 4096
@@ -24,12 +26,12 @@ class Wawe extends Component {
       analyser.connect(javascriptNode)
       javascriptNode.connect(audioCtx.destination)
 
-      javascriptNode.onaudioprocess = (e) => {
+      javascriptNode.onaudioprocess = () => {
         const array = new Uint8Array(analyser.frequencyBinCount)
         analyser.getByteFrequencyData(array)
         let values = 0
 
-        for (var i = 0; i < array.length; i++) {
+        for (let i = 0; i < array.length; i++) {
           values += (array[i])
         }
 
@@ -60,7 +62,11 @@ class Wawe extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    nextState.wave.amplitude = 0.5 * (1 + Math.sin(nextState.analyser))
+    if (nextState.analyser > 9000) nextState.wave.amplitude = 0.5 * (1 + Math.sin(nextState.analyser))
+  }
+
+  componentWillUnmount() {
+    this.state.audioCtx.close()
   }
 
   render() {
@@ -74,4 +80,4 @@ class Wawe extends Component {
   }
 }
 
-export default Wawe
+export default Wave

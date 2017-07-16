@@ -1,8 +1,6 @@
 import { LANGS_LIST_LOAD, LANGS_LIST_SELECT_LANG,
          LANGS_LIST_CHANGE_LANG } from '../actionTypes'
 
-let nextLangId = 0
-
 export const loadLangs = langs => {
   return {
     type: LANGS_LIST_LOAD,

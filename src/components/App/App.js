@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import style from './App.css'
 import Form from '../Form/Form.js'
-import Wawe from '../Wave/Wave.js'
-import GetSpeech from '../GetSpeech/'
+import Assistent from '../Assistent/'
 
 class App extends Component {
   componentDidMount() {
-    if (!'speechSynthesis' in window) {
+    if (!('speechSynthesis' in window)) {
       alert("Your computer has not any languages")
     }
   }
@@ -14,9 +13,8 @@ class App extends Component {
   render() {
     return (
       <div className={style.App}>
-        <GetSpeech />
+        <Assistent />
         <Form />
-        <Wawe />
       </div>
     )
   }

@@ -1,16 +1,16 @@
 .container {
-  height: 75%;
+  height: 80%;
   padding: 15px; }
   .container__form {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    margin-top: 20px; }
+    margin-top: 80px; }
     .container__form__textarea {
       width: 70%;
       min-width: 550px;
       height: 60%;
-      min-height: 340px;
+      min-height: 400px;
       font-family: Helvetica, Arial, sans-serif;
       font-size: 64px;
       text-align: center;
