@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { loadLangs, selectLang, changeLang } from '../../actions/langs'
 import style from './Form.css'
 
 class Form extends Component {
   constructor(props) {
     super(props)
-    this.state = { langs: undefined,
-                   selectedLang: undefined,
-                   text: '',
+    this.state = { text: '',
                    isTalk: false,
                    timeOut: 0 }
     this.handleChange = this.handleChange.bind(this)
@@ -18,7 +18,7 @@ class Form extends Component {
 
   componentWillMount() {
     speechSynthesis.onvoiceschanged = () => {
-      this.setState({ langs: [ ...speechSynthesis.getVoices() ] })
+      this.props.onListLoad(speechSynthesis.getVoices())
     }
   }
 
@@ -45,13 +45,17 @@ class Form extends Component {
   }
 
   handleChange(e) {
-    this.setState({ selectedLang: e.target.value })
-    this.handleTalk()
+    this.props.langs.find((val, index) => {
+      if (index == e.target.value) this.props.onLangChanged(val)
+    })
+    setTimeout(() => {
+      this.handleTalk()
+    }, 500)
     this.textArea.focus()
   }
 
   handleKeyUp(e) {
-    this.setState({text: e.target.value})
+    this.setState({ text: e.target.value})
   }
 
   handleTalk() {
@@ -59,7 +63,7 @@ class Form extends Component {
     let msg = new SpeechSynthesisUtterance()
 
     if (this.state.isTalk) {
-      msg.voice = voices[this.state.selectedLang]
+      msg.voice = this.props.selectedLang
       msg.rate = 1
       msg.pitch = 1
       msg.text = this.state.text
@@ -85,8 +89,6 @@ class Form extends Component {
   }
 
   render() {
-    const langs = this.state.langs
-
     return(
       <div className={style.container}>
         <form className={style.container__form}>
@@ -96,11 +98,11 @@ class Form extends Component {
                     autoFocus={true}
                     placeholder="Your text" />
           <div className={style.container__form__selectCont}>
-            {langs && <select className={style.container__form__select}
+            {this.props.langs && <select className={style.container__form__select}
                               onChange={this.handleChange}>
-              {langs.map((lang, id) => {
-                return <option key={id} value={id}>{lang.name} - {lang.lang.slice(3, 5)}</option>
-              })}
+              {this.props.langs.map((lang, id) =>
+                <option key={id} value={id}>{lang.name} - {lang.lang.slice(3, 5)}</option>
+              )}
             </select>}
             <div className={style.container__form__select__arrow}></div>
           </div>
@@ -118,4 +120,16 @@ class Form extends Component {
   }
 }
 
-export default Form
+const mapStateToProps = (state) => ({ ...state })
+
+const mapDispatchToProps = (dispatch) => ({
+  onListLoad: langs => {
+    dispatch(loadLangs(langs))
+    dispatch(selectLang(langs[0]))
+  },
+  onLangChanged: lang => {
+    dispatch(changeLang(lang))
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form)

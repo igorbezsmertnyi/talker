@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import style from './App.css'
 import Form from '../Form/Form.js'
 import Wawe from '../Wave/Wave.js'
+import GetSpeech from '../GetSpeech/'
 
 class App extends Component {
   componentDidMount() {
@@ -13,6 +14,7 @@ class App extends Component {
   render() {
     return (
       <div className={style.App}>
+        <GetSpeech />
         <Form />
         <Wawe />
       </div>
