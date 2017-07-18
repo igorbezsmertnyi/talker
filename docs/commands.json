@@ -1,0 +1,23 @@
+{
+  "en": [
+    { "action": "_OPEN", "key": ["open", "please open", "can you open"] },
+    { "action": "_FIND_STRING", "key": ["find", "search", "please find my", "look for", "show", "show me", "please show me"] },
+    { "action": "_FIND_SOMEONE", "key": ["who is", "who is it", "tell me about"] },
+    { "action": "_FIND_LOCATION", "key": ["where is", "where is it"] },
+    { "action": "_SAY", "key": ["say", "please say","repeat", "to sound", "pronounce", "utter", "articulate"] }
+  ],
+  "ru": [
+    { "action": "_OPEN", "key": ["открой", "открой пожалуйста", "можешь пожалуйста открыть"] },
+    { "action": "_FIND_STRING", "key": ["найди", "ищи", "покажи мне пожплуйста", "отыщи", "покажи", "покажи мне", "покажи мне пожалуйста"] },
+    { "action": "_FIND_SOMEONE", "key": ["кто такой", "расскажи мне о"] },
+    { "action": "_FIND_LOCATION", "key": ["где находится"] },
+    { "action": "_SAY", "key": ["скажи", "скажи пожалуйста", "повтори", "произнеси", "проговори"] }
+  ],
+  "pl": [
+    { "action": "_OPEN", "key": ["otworzyć", "otwórz", "otwórz prosze"] },
+    { "action": "_FIND_STRING", "key": ["znałeżć", "szukać", "pokazać", "pokarz mnie", "odzyskaj", "pokarz mnie prosze"] },
+    { "action": "_FIND_SOMEONE", "key": ["kim jest", "opowiedz mnie o"] },
+    { "action": "_FIND_LOCATION", "key": ["gdzie znajduje się", "gdzie jest"] },
+    { "action": "_SAY", "key": ["powiedz", "powtórz"] }
+  ]
+}

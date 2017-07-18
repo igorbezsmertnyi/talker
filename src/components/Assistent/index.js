@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import { fetchCommands } from '../../actions/commands'
 import { connect } from 'react-redux'
 import style from './style.css'
 import Wave from '../Wave/Wave.js'
 import AssistentBtn from '../AssistentBtn'
+import AssistentAction from '../../lib/AssistentActions'
+import commandContain from '../../lib/commnadParser'
 
 class Assistent extends Component {
   constructor(props) {
@@ -18,6 +21,8 @@ class Assistent extends Component {
   }
 
   componentDidMount() {
+    this.props.onCommandsLoad()
+
     const grammar = '#JSGF V1.0; grammar colors; public <color> = aqua | azure | beige | bisque | black | blue | brown | chocolate | coral | crimson | cyan | fuchsia | ghostwhite | gold | goldenrod | gray | green | indigo | ivory | khaki | lavender | lime | linen | magenta | maroon | moccasin | navy | olive | orange | orchid | peru | pink | plum | purple | red | salmon | sienna | silver | snow | tan | teal | thistle | tomato | turquoise | violet | white | yellow ;'
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)()
     const speechRecognitionList = new (window.SpeechGrammarList || window.webkitSpeechGrammarList || window.mozSpeechGrammarList || window.msSpeechGrammarList )()
@@ -29,7 +34,21 @@ class Assistent extends Component {
     recognition.maxAlternatives = 5
 
     recognition.onresult = e => {
-      this.setState({ transcript: e.results[0][0].transcript, timeOut: 18 })
+      const commands = this.props.commands[this.props.selectedLang.lang.slice(0, 2).toLowerCase()]
+      const res = e.results[0][0].transcript
+      let data = []
+
+      commands.forEach(command => {
+        command.key.forEach((word, wordIndex) => {
+          let tmp = commandContain(word, res)
+          if (tmp.length) data.push(tmp)
+          if (data.length && command.key.length - 1 === wordIndex) {
+            AssistentAction(command.action, data[data.length - 1], this.props.selectedLang)
+          }
+        })
+      })
+
+      this.setState({ transcript: res, timeOut: 18 })
       this.dectimentTimeOut()
     }
   }
@@ -71,6 +90,15 @@ class Assistent extends Component {
   }
 }
 
-const mapStateToProps = state => ({ ...state })
+const mapStateToProps = state => ({
+  commands: state.commands.commands,
+  selectedLang: state.selectedLang
+})
 
-export default connect(mapStateToProps)(Assistent)
+const mapDispatchToProps = dispatch => ({
+  onCommandsLoad: () => {
+    dispatch(fetchCommands())
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Assistent)

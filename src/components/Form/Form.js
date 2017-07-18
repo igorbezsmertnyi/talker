@@ -101,7 +101,7 @@ class Form extends Component {
             {this.props.langs && <select className={style.container__form__select}
                               onChange={this.handleChange}>
               {this.props.langs.map((lang, id) =>
-                <option key={id} value={id}>{lang.name} - {lang.lang.slice(3, 5)}</option>
+                <option key={id} value={id}>{lang.name} - {lang.lang.slice(0, 2).toUpperCase()}</option>
               )}
             </select>}
             <div className={style.container__form__select__arrow}></div>
