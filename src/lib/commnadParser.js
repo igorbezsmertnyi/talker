@@ -1,6 +1,6 @@
 import equals from './equals'
 
-const commandContain = (commands, string) => {
+const commandContain = (commands, string, act) => {
   const stringArr = string.toLowerCase().split(' ')
   const commandArr = commands.split(' ')
   let tmp = []
@@ -15,9 +15,9 @@ const commandContain = (commands, string) => {
   })
 
   if (typeof tmp === 'string') {
-    return tmp
+    return { text: tmp, action: act }
   } else {
-    return []
+    return false
   }
 }
 

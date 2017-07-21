@@ -9,6 +9,7 @@ class Form extends Component {
     this.state = { text: '',
                    isTalk: false,
                    timeOut: 0 }
+
     this.handleChange = this.handleChange.bind(this)
     this.handleTalk = this.handleTalk.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
@@ -18,7 +19,7 @@ class Form extends Component {
 
   componentWillMount() {
     speechSynthesis.onvoiceschanged = () => {
-      this.props.onListLoad(speechSynthesis.getVoices())
+      if (!this.props.selectedLang.length) this.props.onListLoad(speechSynthesis.getVoices())
     }
   }
 
@@ -34,7 +35,7 @@ class Form extends Component {
 
   dectimentTimeOut() {
     setTimeout(() => {
-      if(this.state.timeOut > 0) {
+      if (this.state.timeOut > 0) {
         this.setState({ timeOut: this.state.timeOut - 1 })
         this.dectimentTimeOut()
       } else if (this.state.timeOut === 0) {

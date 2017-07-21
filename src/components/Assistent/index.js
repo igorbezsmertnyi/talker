@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { fetchCommands } from '../../actions/commands'
+import { AssistentAction } from '../../actions/assistent'
 import { connect } from 'react-redux'
 import style from './style.css'
 import Wave from '../Wave/Wave.js'
 import AssistentBtn from '../AssistentBtn'
-import AssistentAction from '../../lib/AssistentActions'
+import ResultModal from '../ResultModal'
 import commandContain from '../../lib/commnadParser'
 
 class Assistent extends Component {
@@ -14,7 +15,8 @@ class Assistent extends Component {
     this.state = { recognition: undefined,
                    isDialogActive: false,
                    transcript: undefined,
-                   timeOut: 0 }
+                   timeOut: 0,
+                   answear: false }
 
     this.dialogActive = this.dialogActive.bind(this)
     this.dectimentTimeOut = this.dectimentTimeOut.bind(this)
@@ -27,8 +29,8 @@ class Assistent extends Component {
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)()
     const speechRecognitionList = new (window.SpeechGrammarList || window.webkitSpeechGrammarList || window.mozSpeechGrammarList || window.msSpeechGrammarList )()
     this.setState({ recognition: recognition })
-    speechRecognitionList.addFromString(grammar, 1);
-    recognition.grammars = speechRecognitionList;
+    speechRecognitionList.addFromString(grammar, 1)
+    recognition.grammars = speechRecognitionList
     recognition.lang = this.props.selectedLang.lang
     recognition.interimResults = false
     recognition.maxAlternatives = 5
@@ -37,13 +39,15 @@ class Assistent extends Component {
       const commands = this.props.commands[this.props.selectedLang.lang.slice(0, 2).toLowerCase()]
       const res = e.results[0][0].transcript
       let data = []
+      let answear = false
 
       commands.forEach(command => {
         command.key.forEach((word, wordIndex) => {
-          let tmp = commandContain(word, res)
-          if (tmp.length) data.push(tmp)
-          if (data.length && command.key.length - 1 === wordIndex) {
-            AssistentAction(command.action, data[data.length - 1], this.props.selectedLang)
+          let tmp = commandContain(word, res, command.action)
+          if (tmp) data.push(tmp)
+          if (data.length && command.key.length - 1 === wordIndex && !answear) {
+            answear = true
+            this.props.onRes(data[data.length - 1], this.props.selectedLang)
           }
         })
       })
@@ -65,7 +69,7 @@ class Assistent extends Component {
         this.setState({ timeOut: this.state.timeOut - 1 })
         this.dectimentTimeOut()
       } else if (this.state.timeOut === 0) {
-        this.setState({ isDialogActive: false })
+        this.setState({ isDialogActive: false, answear: false })
       }
     }, 400)
   }
@@ -98,6 +102,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onCommandsLoad: () => {
     dispatch(fetchCommands())
+  },
+  onRes: (dataQuery, lang) => {
+    dispatch(AssistentAction(dataQuery, lang))
   }
 })
 

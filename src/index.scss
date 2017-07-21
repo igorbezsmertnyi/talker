@@ -5,3 +5,28 @@ body {
   overflow: hidden;
   background-color: #282830;
 }
+
+$scrollbar-height: 5px;
+$scrollbar-padding: 15px;
+
+::-webkit-scrollbar {
+  height: (($scrollbar-padding * 2) + $scrollbar-height);
+	background-color: rgba(255,255,255,0);
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb {
+	border: 9px solid rgba(255,255,255,0);
+	background-clip: padding-box;
+}
+
+::-webkit-scrollbar-track {
+	background-color: #ccc;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #747474;
+	&:hover {
+		border: $scrollbar-padding solid rgba(255,255,255,0);
+	}
+}
