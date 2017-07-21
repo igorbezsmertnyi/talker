@@ -7,7 +7,7 @@ const SearchModal = ({ assistent, handleClick }) => (
          className={style.searchModal__bg}></div>
     <div className={style.searchModal__modal}>
       <div className={style.searchModal__modal__query}>
-        <h3>Search: {assistent.data.data.queries.request[0].searchTerms}</h3>
+        <h3>Search: {assistent.query}</h3>
       </div>
       <div className={style.searchModal__modal__list}>
         {assistent.data.data.items.map((item, key) => (

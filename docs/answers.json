@@ -1,0 +1,14 @@
+{
+  "en": [
+    { "action": "_OPEN", "key": ["card opened"] },
+    { "action": "_FIND_STRING", "key": ["that's what i managed to find", "here's what i found", "that's what i found", "that's all I could find on request"] }
+  ],
+  "ru": [
+    { "action": "_OPEN", "key": ["закладка открыта"] },
+    { "action": "_FIND_STRING", "key": ["вот что мне удалось найти", "вот что мне удалось найти по запросу", "вот результаты поиска", "это все что я смог найти по запросу"] }
+  ],
+  "pl": [
+    { "action": "_OPEN", "key": ["zakładka otwarta"] },
+    { "action": "_FIND_STRING", "key": ["oto, co udało mi się znaleźć", "oto, co udało mi się znaleźć na życzenie", "oto wyniki wyszukiwania", "to wszystko, co udało mi się znaleźć na życzenie"] }
+  ]
+}

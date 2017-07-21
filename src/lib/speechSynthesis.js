@@ -5,9 +5,11 @@ const SpeechSynthesis = (text, lang) => {
   msg.rate = 1
   msg.pitch = 1
   msg.text = text
-  speechSynthesis.speak(msg)
 
-  return text
+  if (!speechSynthesis.speaking) {
+    speechSynthesis.speak(msg)
+    return text
+  }
 }
 
 export default SpeechSynthesis

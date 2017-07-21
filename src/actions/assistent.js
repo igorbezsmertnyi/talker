@@ -1,4 +1,5 @@
-import { ASSISTENT_ACTION, ASSISTENT_SET_RESULT, ASSISTENT_CLEAR_RESULT } from '../actionTypes'
+import { ASSISTENT_ACTION, ASSISTENT_SET_RESULT, ASSISTENT_CLEAR_RESULT,
+         ASSISTENT_ACTION_FIND_STRING_FILED } from '../actionTypes'
 import SpeechSynthesis from '../lib/speechSynthesis'
 
 
@@ -6,6 +7,13 @@ export const reduceAction = (action, data) => {
   return {
     type: `${ASSISTENT_ACTION}${action}`,
     assistent: data
+  }
+}
+
+export const fetchFiled = err => {
+  return {
+    type: ASSISTENT_ACTION_FIND_STRING_FILED,
+    err: err
   }
 }
 
@@ -27,6 +35,7 @@ export const AssistentAction = (dataQuery, lang) => dispatch => {
         .then(data => {
           dispatch(reduceAction(dataQuery.action,  { data: data, action: dataQuery.action }))
         })
+        .catch(err => dispatch(fetchFiled(err)))
       break
     default:
       break

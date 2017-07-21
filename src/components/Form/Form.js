@@ -19,7 +19,12 @@ class Form extends Component {
 
   componentWillMount() {
     speechSynthesis.onvoiceschanged = () => {
-      if (!this.props.selectedLang.length) this.props.onListLoad(speechSynthesis.getVoices())
+      const voices = speechSynthesis.getVoices()
+      this.props.onListLoad(voices)
+      if (this.select.value == 0) {
+        console.log(this.select.value)
+        this.props.onLangSelected(voices[0])
+      }
     }
   }
 
@@ -99,7 +104,9 @@ class Form extends Component {
                     autoFocus={true}
                     placeholder="Your text" />
           <div className={style.container__form__selectCont}>
-            {this.props.langs && <select className={style.container__form__select}
+            {this.props.langs && <select
+                              ref={(select) => this.select = select}
+                              className={style.container__form__select}
                               onChange={this.handleChange}>
               {this.props.langs.map((lang, id) =>
                 <option key={id} value={id}>{lang.name} - {lang.lang.slice(0, 2).toUpperCase()}</option>
@@ -126,7 +133,9 @@ const mapStateToProps = (state) => ({ ...state })
 const mapDispatchToProps = (dispatch) => ({
   onListLoad: langs => {
     dispatch(loadLangs(langs))
-    dispatch(selectLang(langs[0]))
+  },
+  onLangSelected: lang => {
+    dispatch(selectLang(lang))
   },
   onLangChanged: lang => {
     dispatch(changeLang(lang))

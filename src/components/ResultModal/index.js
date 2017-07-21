@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { assistentClear } from '../../actions/assistent'
 import style from './style.css'
 import SearchModal from './Search'
+import AssistentAnswer from '../../lib/assistentAnswer'
 
 const modalType = action => {
   switch (action) {
@@ -33,6 +34,7 @@ class ResultModal extends Component {
 
   render() {
     let type = modalType(this.props.assistent.action)
+    AssistentAnswer(this.props.selectedLang, this.props.answers, this.props.assistent)
 
     return (
       <div>
