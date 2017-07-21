@@ -15,7 +15,7 @@
   ],
   "pl": [
     { "action": "_OPEN", "key": ["otworzyć", "otwórz", "otwórz prosze"] },
-    { "action": "_FIND_STRING", "key": ["znałeżć", "szukać", "pokazać", "pokarz mnie", "odzyskaj", "pokarz mnie prosze"] },
+    { "action": "_FIND_STRING", "key": ["znałeżć", "szukać", "szukaj", "znajdź", "pokazać", "pokarz mnie", "odzyskaj", "pokarz mnie prosze"] },
     { "action": "_FIND_SOMEONE", "key": ["kim jest", "opowiedz mnie o"] },
     { "action": "_FIND_LOCATION", "key": ["gdzie znajduje się", "gdzie jest"] },
     { "action": "_SAY", "key": ["powiedz", "powtórz"] }
